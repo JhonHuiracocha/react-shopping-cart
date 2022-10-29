@@ -24,15 +24,13 @@ export const CartPage: React.FC = (): JSX.Element => {
         <>
           <CartList items={cartState?.items} />
 
-          <div className="d-flex align-items-center my-2">
-            <h6>Total: ${totalPrice}</h6>
-            <button
-              onClick={() => cleanCart()}
-              className="btn btn-danger ms-auto"
-            >
-              <i className="bi bi-trash-fill"></i>
-            </button>
-          </div>
+          <h6 className="my-3">Total: ${totalPrice}</h6>
+          <button
+            onClick={() => cleanCart()}
+            className="btn btn-danger ms-auto"
+          >
+            <i className="bi bi-trash-fill"></i>
+          </button>
         </>
       )}
     </>

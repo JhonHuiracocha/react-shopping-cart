@@ -1,4 +1,4 @@
-import { useReducer, useContext } from "react";
+import { useReducer, useContext, useEffect } from "react";
 import {
   Product,
   ProductContext,
@@ -11,9 +11,21 @@ const INITIAL_STATE: CartState = {
   items: [],
 };
 
+const init = (): CartState => {
+  const items: Item[] = JSON.parse(localStorage.getItem("items") || "");
+
+  return {
+    items,
+  };
+};
+
 export const useCart = (): CartContextProps => {
-  const [cartState, dispatch] = useReducer(cartReducer, INITIAL_STATE);
+  const [cartState, dispatch] = useReducer(cartReducer, INITIAL_STATE, init);
   const { products } = useContext<ProductContextProps>(ProductContext);
+
+  useEffect(() => {
+    localStorage.setItem("items", JSON.stringify(cartState.items));
+  }, [cartState.items]);
 
   const addToCart = (item: Item): void => {
     dispatch({ type: "ADD_TO_CART", payload: item });
@@ -32,7 +44,7 @@ export const useCart = (): CartContextProps => {
   };
 
   const cleanCart = (): void => {
-    dispatch({type: 'CLEAN_CART'})
+    dispatch({ type: "CLEAN_CART" });
   };
 
   const doesItemExistInCart = (itemId: number): boolean => {
